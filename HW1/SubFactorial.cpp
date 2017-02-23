@@ -5,6 +5,7 @@ using std::cout;
 using std::cin;
 using std::endl;
 using std::string;
+using std::cerr;
 
 typedef long long int UT;
 UT Subfact(UT n) {
@@ -19,8 +20,12 @@ int main(void) {
     do {
         cout <<"Enter a number N: ";
         cin>>num;
-        cout <<"The first "<<num+1<<" subfactorials are:"<<endl;
-        Subfact(num);
+        if(num>12) cerr<<"N is too big ("<<num<<">12)"<<endl;
+        else if(num<0) cerr<<"N is too small ("<<num<<"<0)"<<endl;
+        else {
+            cout <<"The first "<<num+1<<" subfactorials are:"<<endl;
+            Subfact(num);
+        }
         cout <<"Enter Y/y to continue or enter any key to exit... ";
         cin>>p;
     }while(p=="y"||p=="Y");

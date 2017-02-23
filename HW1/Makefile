@@ -1,12 +1,12 @@
 all: java cpp
 java:
-	javac Main.java
-	jar cvfm MainJava.jar main.mf Main.class
+	javac SubFactorial.java
+	jar cvfm SubFactorialJAVA.jar main.mf SubFactorial.class
 cpp:
-	g++ hw1.cpp -o MainCPP.bin
+	g++ SubFactorial.cpp -o SubFactorialCPP.bin
 clean:
-	rm -f MainCPP.bin Main.class MainJava.jar
+	rm -f SubFactorialCPP.bin SubFactorial.class SubFactorialJAVA.jar
 run.java: java
-	java -jar MainJava.jar
+	java -jar SubFactorialJAVA.jar
 run.cpp: cpp
-	./MainCPP.bin
+	./SubFactorialCPP.bin

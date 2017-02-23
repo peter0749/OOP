@@ -10,7 +10,7 @@ Simple Guide: just make
 #### 環境
 OS:
 
-`Mac OSX 10.12.3`
+Mac OSX 10.12.3
 
 Compiler:
 ```

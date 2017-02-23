@@ -4,7 +4,7 @@ ID number: 404410030
 Name: 鄭光宇
 Environment: Mac OSX 10.12.3
 Email: jengku@gmail.com
-Bonus: 
+Bonus: Makefile
 Simple Guide: just make
 ---
 #### 環境

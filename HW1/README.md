@@ -1,5 +1,5 @@
 ---
-Date: 2017/02/23 13:50
+Date: 2017-02-23 13:50
 ID number: 404410030
 Name: 鄭光宇
 Environment: Mac OSX 10.12.3

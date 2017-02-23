@@ -1,12 +1,12 @@
-all: java cpp
-java:
+all: SubFactorialJAVA.jar SubFactorialCPP.bin
+SubFactorialJAVA.jar: SubFactorial.java main.mf
 	javac SubFactorial.java
 	jar cvfm SubFactorialJAVA.jar main.mf SubFactorial.class
-cpp:
+SubFactorialCPP.bin: SubFactorial.cpp
 	g++ SubFactorial.cpp -o SubFactorialCPP.bin
 clean:
 	rm -f SubFactorialCPP.bin SubFactorial.class SubFactorialJAVA.jar
-run.java: java
+run.java:
 	java -jar SubFactorialJAVA.jar
-run.cpp: cpp
+run.cpp:
 	./SubFactorialCPP.bin

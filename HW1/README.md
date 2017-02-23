@@ -27,6 +27,8 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.121-b13, mixed mode)
 `make all`
 
 #### 執行
+編譯後，
+
 執行 C++ 版的 `make run.cpp` 或是 `./SubFactorialCPP.bin`
 
 執行 Java 版的 `make run.java` 或是 `java -jar SubFactorialJAVA.jar`

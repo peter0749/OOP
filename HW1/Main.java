@@ -2,8 +2,13 @@ import java.util.Scanner;
 
 class Main
 {
-    public static void main(String args[]){
+    public static int Subfact(int n) {
+        int res = n!=0?n*Subfact(n-1)+(n%2==0?1:-1):1;
+        System.out.println("!"+n+"="+res);
+        return res;
+    }
 
+    public static void main(String args[]){
         Scanner scanner = new Scanner(System.in);
         int n;
         String test;
@@ -16,12 +21,4 @@ class Main
             test=scanner.nextLine();
         } while(test.equalsIgnoreCase("y"));
     }
-
-    public static int Subfact(int n) {
-        int res = n!=0?n*Subfact(n-1)+(n%2==0?1:-1):1;
-        System.out.println("!"+n+"="+res);
-        return res;
-    }
-
 }
-

@@ -6,7 +6,7 @@ SubFactorial.class: SubFactorial.java
 SubFactorialJAVA.jar: SubFactorial.class main.mf
 	jar cvfm SubFactorialJAVA.jar main.mf SubFactorial.class
 SubFactorialCPP.bin: SubFactorial.cpp
-	g++ ${CFLAG} ${CEXFLAG} SubFactorial.cpp -o SubFactorialCPP.bin
+	g++ ${CFLAG} ${CEXFLAG} ${CDEFINE} SubFactorial.cpp -o SubFactorialCPP.bin
 clean:
 	rm -f SubFactorialCPP.bin SubFactorial.class SubFactorialJAVA.jar
 run.java: SubFactorialJAVA.jar

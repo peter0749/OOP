@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <climits>
+#include <stdexcept>
 
 using std::cout;
 using std::cin;

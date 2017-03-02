@@ -23,7 +23,7 @@ class SubFactorial
                 n=scanner.nextInt();
             } catch(InputMismatchException err) {
                 n=0;
-                System.out.println("Bad input. Please enter integer (N set to "+n+")");
+                System.out.println("Bad input format. Please enter an integer (N sets to "+n+")");
             }
             scanner.nextLine(); //This is needed to pick up the new line
             if(n>12) System.out.println("N is too big ("+n+">12)...");

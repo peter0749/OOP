@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.InputMismatchException;
 
 class Functional
 {
@@ -18,7 +19,12 @@ class SubFactorial
         String test;
         do {
             System.out.println("Enter a number N: ");
-            n=scanner.nextInt();
+            try {
+                n=scanner.nextInt();
+            } catch(InputMismatchException err) {
+                n=0;
+                System.out.println("Bad input. Please enter integer (N set to "+n+")");
+            }
             scanner.nextLine(); //This is needed to pick up the new line
             if(n>12) System.out.println("N is too big ("+n+">12)...");
             else if(n<0) System.out.println("N is too small ("+n+"<0)...");

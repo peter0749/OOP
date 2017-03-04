@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <limits>
 #include <climits>
+#include <algorithm>
 #include <stdexcept>
 
 using std::cout;
@@ -10,6 +12,7 @@ using std::endl;
 using std::string;
 using std::cerr;
 using std::stringstream;
+using std::istream;
 using std::runtime_error;
 
 #ifdef LLVERSION
@@ -32,22 +35,27 @@ int main(void) {
         try {
             cout <<"Enter a number N: ";
             cin>>num;
+            if(!cin.good()) throw runtime_error("Bad input format!");
             if(num>UBOND || num<0) {
                 stringstream msg;
                 bool errt=(num>UBOND);
                 msg<<"N is too "<<(errt?"big":"small")<<" ("<<\
                 num<<(errt?">":"<")<<(errt?UBOND:0)<<')';
                 throw runtime_error(msg.str());
-            } else {
+            } else { //All good.
                 cout <<"The first "<<num+1<<" subfactorials are:"<<endl;
                 Subfact(num);
             }
         } catch (runtime_error err) {
             cerr<<err.what()<<endl<<"Please try again."<<endl;
+            if(cin.bad()) throw runtime_error("Oops! IO stream corrupted. The program fails anyway.");
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
         }
         cout <<"Enter Y/y to continue or enter any key to exit... ";
-        cin>>p;
-    } while(p=="y"||p=="Y");
+        p="N";
+        cin>>p; // cin must be good. ow exit.
+    } while(cin.good() && (p=="y"||p=="Y"));
     cout<<"Bye"<<endl;
     return 0;
 }

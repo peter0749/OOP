@@ -120,7 +120,7 @@ class UserInterface:public Pascal {
             cout << "Choose:" << endl;
             cout << "1. Pascal_Cord(n,k), compute C^n_k" << endl;
             cout << "2. Pascal_Triangle(n), " << endl;
-            cout << "display first n rows of pascal triangle" << endl;
+            cout << "   display first n rows of pascal triangle" << endl;
             cout << "3. Eval_Polynomial(x, [list])" << endl;
             cout << "4. Eval_(X+1)^n (n, x)" << endl;
             cout << "0. Quit" << endl;

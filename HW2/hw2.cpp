@@ -165,12 +165,12 @@ class UserInterface:public Pascal {
                     cout<<res<<endl;
                         }break;
                 case 0:
-                        return false;
+                        return false; // return false to exit
                         break;
             }
             if(!cin.good()) throw runtime_error("Bad input format in submenu");
             cout<<"====="<<endl;
-            return true;
+            return true; // ow continue
         }
 
         void pascalMainLoop(void) {

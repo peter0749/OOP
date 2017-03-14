@@ -3,6 +3,8 @@
 #include <string>
 #include <algorithm>
 #include <list>
+#include <stdexcept>
+#include <limits>
 
 using namespace std;
 
@@ -31,6 +33,9 @@ class Pascal {
             return P[n] / (P[k]*P[n-k]);
         }
     public:
+        inline UT PascalCord(int n, int k) {
+            return combine(n, k);
+        }
         LOL EnumeratePascalTriangle(int n) {
             // Why make the program in-efficient!?!?
             // Use combination to compute pascal triangle
@@ -73,12 +78,12 @@ class Pascal {
             return ans;
         }
         list<UT> BinomialCoefficient(int n) { 
-            EnumeratePascalTriangle(n);
+            EnumeratePascalTriangle(n+1);
             LOL::iterator v=pascal.begin();
             while(n--) ++v;
             return list<UT>(v->begin(), v->end());
         }
-        UT EvalRowOfPsacalsTriangle(int n=0, int x=0) {
+        UT EvalRowOfPsacalsTriangle(int n, int x) {
             list<UT> temp(BinomialCoefficient(n));
             return EvalPolynomial(x, temp);
         }
@@ -98,31 +103,100 @@ class Pascal {
         }
 };
 
-inline void prt(const list<UT> &l) {
-    for(const UT& u: l) cout<<u<<' '; //C++11 auto loop
-}
-inline void prtll(const LOL &p) {
-    int i=0;
-    for(const list<UT>& v: p) { //C++11 auto loop
-        prt(v);
-        cout<<endl;
-    }
-}
+class UserInterface:public Pascal {
+    public:
+        inline void prt(const list<UT> &l) {
+            for(const UT& u: l) cout<<u<<' '; //C++11 auto loop
+        }
+        inline void prtll(const LOL &p) {
+            int i=0;
+            for(const list<UT>& v: p) { //C++11 auto loop
+                prt(v);
+                cout<<endl;
+            }
+        }
+
+        inline void showMenu(void) {
+            cout << "Choose:" << endl;
+            cout << "1. Pascal_Cord(n,k), compute C^n_k" << endl;
+            cout << "2. Pascal_Triangle(n), " << endl;
+            cout << "display first n rows of pascal triangle" << endl;
+            cout << "3. Eval_Polynomial(x, [list])" << endl;
+            cout << "4. Eval_(X+1)^n (n, x)" << endl;
+            cout << "0. Quit" << endl;
+        }
+
+        bool selectFunc(const int sig) {
+            switch(sig) {
+                case 1: {
+                    int n(0), k(0);
+                    cout<<"Enter n k"<<endl;
+                    cin>>n>>k;
+                    cout<<PascalCord(n,k)<<endl;
+                        }break;
+                case 2: {
+                    int n(0);
+                    cout<<"Enter n"<<endl;
+                    cin>>n;
+                    LOL temp=EnumeratePascalTriangle(n);
+                    prtll(temp);
+                        }break;
+                case 3: {
+                    int x(0), n(0);
+                    cout<<"Enter x"<<endl;
+                    cin>>x;
+                    cout<<"How many coefficients you want to input?"<<endl;
+                    cin>>n;
+                    list<UT> coef;
+                    while(n--) {
+                        int c=0;
+                        cin>>c;
+                        coef.push_back(c);
+                    }
+                    cout<<EvalPolynomial(x,coef)<<endl;
+                        }break;
+                case 4: {
+                    int n(0), x(0);
+                    cout<<"Enter n"<<endl;
+                    cin>>n;
+                    cout<<"Enter x"<<endl;
+                    cin>>x;
+                    UT res=EvalRowOfPsacalsTriangle(n,x);
+                    cout<<res<<endl;
+                        }break;
+                case 0:
+                        return false;
+                        break;
+            }
+            if(!cin.good()) throw runtime_error("Bad input format in submenu");
+            cout<<"====="<<endl;
+            return true;
+        }
+
+        void pascalMainLoop(void) {
+            int sig;
+            while(true) {
+                showMenu();
+                try {
+                    cin>>sig;
+                    if(!cin.good()) throw runtime_error("Bad input format!");
+                    if(!selectFunc(sig)) break;
+                } catch (runtime_error err) {
+                    cerr<<err.what()<<endl<<"Please try again."<<endl;
+                    if(cin.bad()) {
+                        cerr<<"IO stream corrupted. The program fails anyway."<<endl;
+                        exit(-1); // Program fails!
+                    }
+                    cin.clear(); // clear error bit
+                    cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+                    // clean-up the buffer
+                }
+            }
+        }
+};
 
 int main(void) {
-    const UT inputData[]={1,5,0,3}; // The sample coefficients
-    Pascal poly;
-    LOL tri=poly.ClassicPascalTriangle(21); // Compute the pascal triangle
-    cout << "Task 1:\nenumerate-pascal-triangle\n" << endl;
-    prtll(tri);
-    list<UT> bi=poly.BinomialCoefficient(10);
-    cout << "==="  << endl << "Task 2:\nbinomial-coefficient(10)\n" << endl;
-    prt(bi); cout<<endl;
-    bi.clear();
-    for(int i=0; i<4; ++i) bi.push_back(inputData[i]);
-    cout << "==="  << endl << "Task 3:\neval-polynomial(5, [1,5,0,3])\n" << endl;
-    cout << poly.EvalPolynomial(5, bi) << endl;
-    cout << "==="  << endl << "Task 4:\neval-row-of-psacals-triangle(5, 3)\n" << endl;
-    cout << poly.EvalRowOfPsacalsTriangle(5, 3) << endl;
+    UserInterface UI;
+    UI.pascalMainLoop();
     return 0;
 }

@@ -92,6 +92,10 @@ class Pascal {
             build_comb(); //Preprocessing combinations
             pascal.push_back(list<UT>(1,1)); // The first term of pascal
         }
+        ~Pascal() {
+            delete[] P;
+            P=NULL;
+        }
 };
 
 inline void prt(const list<UT> &l) {

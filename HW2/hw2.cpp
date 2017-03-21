@@ -250,6 +250,7 @@ class UserInterface:public Pascal {
                 showMenu();
                 try {
                     cin>>sig;
+                    if(cin.eof()) return; // Read End-Of-File
                     if(!cin.good()) throw runtime_error("Bad input format!");
                     try {
                         if(!selectFunc(sig)) break;

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+JUDGE_SCALE=$1
+rm -f gen
+g++ testfile_generator.cpp -DJUDGE_SCALE=${JUDGE_SCALE} -o gen

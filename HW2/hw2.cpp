@@ -6,7 +6,6 @@
 #include <vector>
 #include <stdexcept>
 #include <limits>
-//#define _TEST
 
 using namespace std;
 
@@ -49,10 +48,6 @@ class Pascal {
                 res=combine(n, k);
             } catch(runtime_error err) {
                 res=0;
-#ifndef _PUBLISH
-                cerr<<err.what()<<endl;
-                cerr<<"The result sets to "<<res<<endl;
-#endif
             }
             return res;
         }

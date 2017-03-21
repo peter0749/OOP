@@ -216,7 +216,7 @@ class UserInterface:public Pascal {
                             cout<<"How many coefficients you want to input?"<<endl;
                             cin>>n;
                             list<UT> coef;
-                            cout<<"Please enter from degree 0 to degree n-1" << endl;
+                            cout<<"Please enter from degree "<< n-1 <<" to degree 0" << endl;
                             while(n--) {
                                 int c=0;
                                 cin>>c;

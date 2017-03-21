@@ -1,3 +1,8 @@
+/*
+*   Author: 404410030 - Kuang-Yu Jeng
+*   2017/03/21
+*   All Rights Reserved
+*/
 #include <bits/stdc++.h>
 using namespace std;
 

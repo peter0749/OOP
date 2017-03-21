@@ -210,6 +210,7 @@ class UserInterface:public Pascal {
                             cout<<"Enter n"<<endl;
                             cin>>n;
                             if(n<0||n>20) throw runtime_error("n must not less than 0 or greater than 20");
+                            EnumeratePascalTriangle(n+1);
                             LOL::iterator v=begin();
                             while(n--) ++v;
                             prt(*v);

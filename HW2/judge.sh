@@ -1,4 +1,10 @@
 #!/bin/bash
+
+#
+#   Author: 404410030 - Kuang-Yu Jeng
+#   2017/03/21
+#   All Rights Reserved
+#
 JUDGE_SCALE=200000
 echo "Stand by..."
 make all

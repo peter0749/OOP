@@ -148,6 +148,7 @@ class Pascal {
             list<UT> res;
             try {
                 if(n<0) throw runtime_error("Negative row is undefined");
+                if(n>20) throw runtime_error("Can't complete if n is greater than 20");
                 list<UT> temp=BinomialCoefficient(n);
                 res.clear();
                 res.insert(res.end(), temp.begin(), temp.end());
@@ -186,9 +187,10 @@ class UserInterface:public Pascal {
 
         inline void showMenu(void) {
             cout << "Choose:" << endl;
-            cout << "1. Pascal_Cord(n,k), compute C^n_k" << endl;
-            cout << "2. Pascal_Triangle(n), " << endl;
-            cout << "   display first n rows of pascal triangle" << endl;
+            cout << "1. Pascal_Triangle(n), " << endl;
+            cout << "   display [0,n] rows of pascal triangle" << endl;
+            cout << "2. Pascal_Row(n), " << endl;
+            cout << "   display (n+1)-th rows of pascal triangle" << endl;
             cout << "3. Eval_Polynomial(x, [list])" << endl;
             cout << "4. Eval_(X+1)^n (n, x)" << endl;
             cout << "0. Quit" << endl;
@@ -197,17 +199,21 @@ class UserInterface:public Pascal {
         bool selectFunc(const int sig) {
             switch(sig) {
                 case 1: {
-                            int n(0), k(0);
-                            cout<<"Enter n k"<<endl;
-                            cin>>n>>k;
-                            cout<<PascalCord(n,k)<<endl;
+                            int n(0);
+                            cout<<"Enter n"<<endl;
+                            cin>>n;
+                            LOL temp=EnumeratePascalTriangle(n+1);
+                            prtll(temp);
                         }break;
                 case 2: {
                             int n(0);
                             cout<<"Enter n"<<endl;
                             cin>>n;
-                            LOL temp=EnumeratePascalTriangle(n);
-                            prtll(temp);
+                            if(n<0||n>20) throw runtime_error("n must not less than 0 or greater than 20");
+                            LOL::iterator v=begin();
+                            while(n--) ++v;
+                            prt(*v);
+                            cout<<endl;
                         }break;
                 case 3: {
                             int x(0), n(0);

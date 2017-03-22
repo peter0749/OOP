@@ -9,7 +9,7 @@
 #include "include/UI.hpp"
 
 int main(void) {
-    UserInterface UI;
+    Pascal::UserInterface UI;
     UI.pascalMainLoop();
     return 0;
 }

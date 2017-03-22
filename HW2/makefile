@@ -1,6 +1,6 @@
 all: hw2.bin
-hw2.bin: hw2.cpp
-	g++ hw2.cpp -std=c++11 -o hw2.bin
+hw2.bin: main.cpp
+	g++ main.cpp -std=c++11 -o hw2.bin
 run: hw2.bin
 	./hw2.bin
 judge:

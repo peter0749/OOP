@@ -65,13 +65,13 @@ namespace Pascal {
                         std::cout<<"How many coefficients you want to input?"<<std::endl;
                         std::cin>>n;
                         std::list<UT> coef;
-                        std::cout<<"Please enter from degree "<< n-1 <<" to degree 0" << std::endl;
+                        std::cout<<"Please enter from degree "<< n-1 <<" to degree "<< 0 << std::endl;
                         while(n--) {
                             int c=0;
                             std::cin>>c;
                             coef.push_back(c);
                         }
-                        std::cout<<EvalPolynomial(x,coef)<<std::endl;
+                        std::cout<<EvalPolynomialRec(x,coef.rbegin(), coef.rend())<<std::endl;
                     }break;
             case 4: {
                         int n(0), x(0);

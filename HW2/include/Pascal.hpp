@@ -18,7 +18,8 @@ namespace Pascal {
             LOL ClassicPascalTriangle(int);
             std::list<UT> BinomialCoefficient(int);
             UT EvalPolynomial(UT , std::list<UT> &);
-            UT EvalRowOfPsacalsTriangle(int , int);
+            UT EvalPolynomialRec(UT , std::list<UT>::reverse_iterator , std::list<UT>::reverse_iterator ); // Recursive Hornor's method
+            UT EvalRowOfPsacalsTriangle(int , int); // Iterative Hornor's method
             LOL::iterator end();
             LOL::iterator begin();
             Pascal();
@@ -125,6 +126,13 @@ namespace Pascal {
 #endif
         }
         return res;
+    }
+    UT Pascal::EvalPolynomialRec(UT x, std::list<UT>::reverse_iterator u, std::list<UT>::reverse_iterator endp) {
+        std::list<UT>::reverse_iterator v=u; ++v;
+        if(v==endp) {
+            return *u;
+        }
+        return x*EvalPolynomialRec(x, v, endp) + *u;
     }
     UT Pascal::EvalPolynomial(UT x, std::list<UT> &coef) {
         UT ans=0;

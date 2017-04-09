@@ -3,6 +3,7 @@
 #include <sstream>
 #include <cmath>
 #include <limits>
+#include <stdexcept>
 #include "Graph.hpp"
 
 using namespace std; // <--- Not in header file, it's okay.

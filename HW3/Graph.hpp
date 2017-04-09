@@ -25,7 +25,7 @@ class Line {
             double dx = x1 - x0;
             double dy = y1 - y0;
             if(std::abs(dx) < this->_eps) 
-                throw std::runtime_error("Warning: Divde by zero in slope method. The slope is inf...");
+                throw std::runtime_error("Warning: Divde by zero in slope method. The slope is undefined...");
             return dy / dx;
         }
 

@@ -121,12 +121,22 @@ class Circle2:public Circle {
         double x0,y0,x1,y1;
     public:
         Circle2(double x0=-1.0, double y0=0.0, double x1=1.0, double y1=0.0) {
+            this->x0 = x0;
+            this->x1 = x1;
+            this->y0 = y0;
+            this->y1 = y1;
             this->cx = ( x0 + x1 ) / 2.0l;
             this->cy = ( y0 + y1 ) / 2.0l;
             x0 = (x1-x0);
             y0 = (y1-y0);
             this->radius = sqrtl(x0*x0+y0*y0) / 2.0l;
         }
+
+        inline int get_x0 (void) const { return this->x0; }
+        inline int get_x1 (void) const { return this->x1; }
+        inline int get_y0 (void) const { return this->y0; }
+        inline int get_y1 (void) const { return this->y1; }
+
         // The rest is same as class Circle
 };
 
@@ -162,6 +172,15 @@ std::istream &operator >> (std::istream &is, Circle &l) {
     is >> x >> y >> r;
     l = Circle(x, y, r);
     return is;
+}
+std::ostream &operator << (std::ostream &os, const Circle2 &l) {
+    // output as Circle or Circle2 form
+    os << "(" << l.get_x() << ", " << l.get_y() << ")";
+    os << "(" << l.get_radius() << ")";
+    os << " / ";
+    os << "(" << l.get_x0() << ", " << l.get_y0() << ")";
+    os << "(" << l.get_x1() << ", " << l.get_y1() << ")";
+    return os;
 }
 std::istream &operator >> (std::istream &is, Circle2 &l) {
     double x0, y0, x1, y1;

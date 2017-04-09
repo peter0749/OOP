@@ -48,7 +48,7 @@ int main(void) {
 
     // Test Circle2
     Circle2 circle2;
-    cout << "Enter a circle2 (4 doubles, x0, x1, y0, y1): ";
+    cout << "Enter a circle2 (4 doubles, x0, y0, x1, y1): ";
     cin >> circle2;
     cout << "Input circle2 is: " << circle2 << endl;
     cout << "Enter x, y: " << endl;

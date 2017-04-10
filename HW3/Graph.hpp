@@ -111,7 +111,7 @@ class Circle {
         inline bool is_inside(const double x, const double y) {
             double dx = x - this->cx;
             double dy = y - this->cy;
-            return dx*dx + dy*dy <= this->radius*this->radius;
+            return dx*dx + dy*dy < this->radius*this->radius;
         }
 };
 const double Circle::_eps = 1e-7;

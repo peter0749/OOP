@@ -47,6 +47,9 @@ class Line {
             this->y0 += step;
             this->y1 += step;
         }
+        // friend
+        friend std::ostream &operator << (std::ostream &os, const Line &l);
+        friend std::istream &operator >> (std::istream &is, Line &l);
 };
 
 const double Line::_eps = 1e-7;
@@ -83,6 +86,10 @@ class Line2 {
             }
             return true;
         }
+
+        // friend
+        friend std::ostream &operator << (std::ostream &os, const Line2 &l);
+        friend std::istream &operator >> (std::istream &is, Line2 &l);
 };
 const double Line2::_eps = 1e-7;
 
@@ -113,6 +120,8 @@ class Circle {
             double dy = y - this->cy;
             return dx*dx + dy*dy < this->radius*this->radius;
         }
+        friend std::ostream &operator << (std::ostream &os, const Circle &l);
+        friend std::istream &operator >> (std::istream &is, Circle &l);
 };
 const double Circle::_eps = 1e-7;
 
@@ -137,6 +146,8 @@ class Circle2:public Circle {
         inline int get_y0 (void) const { return this->y0; }
         inline int get_y1 (void) const { return this->y1; }
 
+        friend std::ostream &operator << (std::ostream &os, const Circle2 &l);
+        friend std::istream &operator >> (std::istream &is, Circle2 &l);
         // The rest is same as class Circle
 };
 

@@ -21,7 +21,7 @@ class Line {
         inline double get_y0(void) const { return this->y0; }
         inline double get_y1(void) const { return this->y1; }
 
-        double slope (void) {
+        double slope (void) const {
             double dx = x1 - x0;
             double dy = y1 - y0;
             if(std::abs(dx) < this->_eps) 
@@ -29,7 +29,7 @@ class Line {
             return dy / dx;
         }
 
-        double y_intercept(void) {
+        double y_intercept (void) const {
             // not implement yet
             double res(0.0);
             try {
@@ -43,7 +43,7 @@ class Line {
             return res;
         }
 
-        void vshift(double step=0.0) {
+        void vshift (double step=0.0) {
             this->y0 += step;
             this->y1 += step;
         }
@@ -115,11 +115,13 @@ class Circle {
         inline void set_radius(const double r) {
             this->radius = r;
         }
-        inline bool is_inside(const double x, const double y) {
+        inline bool is_inside(const double x, const double y) const {
             double dx = x - this->cx;
             double dy = y - this->cy;
             return dx*dx + dy*dy < this->radius*this->radius;
         }
+
+        // friend
         friend std::ostream &operator << (std::ostream &os, const Circle &l);
         friend std::istream &operator >> (std::istream &is, Circle &l);
 };
@@ -145,7 +147,8 @@ class Circle2:public Circle {
         inline int get_x1 (void) const { return this->x1; }
         inline int get_y0 (void) const { return this->y0; }
         inline int get_y1 (void) const { return this->y1; }
-
+        
+        // friend
         friend std::ostream &operator << (std::ostream &os, const Circle2 &l);
         friend std::istream &operator >> (std::istream &is, Circle2 &l);
         // The rest is same as class Circle

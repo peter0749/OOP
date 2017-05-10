@@ -5,7 +5,9 @@
 // TA will test your class by this program with additional test data.
 
 
-#include <iostream>
+#include "include/global.h"
+#include "include/Node.h"
+#include "include/CircularList.h"
 #include "include/Polynomial.h"
 // ****If you need to include more header files, add it here****
 

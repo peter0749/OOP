@@ -295,12 +295,15 @@ std::ostream &operator << (std::ostream &os, const Polynomial &P) {
     int n = P.getSize()*2+2;
     int *arr = new int[n];
     P.get(arr, n);
-    if (P.getSize()>0) os << arr[0] << "x^" << arr[1];
+    if (P.getSize()>0) {
+        os << arr[0];
+        if (arr[1]>1) os << "x^" << arr[1];
+        else if (arr[1]==1) os << "x"; // for readability
+    }
     for (int i=2; i+1<P.getSize()*2; i+=2) {
         os << (arr[i]>0?" +":" ") << arr[i];
-        if (arr[i+1]!=0) {
-            os << "x^" << arr[i+1];
-        }
+        if (arr[i+1]>1) os << "x^" << arr[i+1];
+        else if (arr[i+1]==1) os << "x";
     }
     delete[] arr;
     return os;

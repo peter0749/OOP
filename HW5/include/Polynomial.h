@@ -96,10 +96,15 @@ class CircularList {
             a[top++] = 0;
             a[top++] = -1;
         }
-        ~CircularList() {
+        void erase_all(void) {
             while(!isEmpty()) {
                 erase_last();
             }
+            data_ptr = data;
+            read_ptr = data->getNext();
+        }
+        ~CircularList() {
+            erase_all();
             delete data;
         }
 };
@@ -110,12 +115,15 @@ class Polynomial {
         int number;
     public:
         Polynomial() :number(0) {}
-        Polynomial(Polynomial &cpy) :number(cpy.getSize()*2) {
-            int n=number;
+        Polynomial(Polynomial &cpy) :number(cpy.getSize()) {
+            int n=number*2+2;
             int *a = new int[n];
             cpy.get(a, n);
             set(a, n);
             delete[] a;
+        }
+        Polynomial(int *arr, const int n) : number(0) {
+            set(arr, n);
         }
         int getSize(void) const {
             return number;
@@ -125,11 +133,25 @@ class Polynomial {
         }
         void set(int *a, int n) {
             if (n<4) return;
-            for (int i=0; i<n; i+=2) {
+            number = 0;
+            queue.erase_all();
+            for (int i=0; i+1<n; i+=2) {
                 if (a[i]==0 && a[i+1]==-1) break;
                 queue.insert(a[i], a[i+1]);
                 ++number;
             }
+        }
+        const Polynomial derivative(void) {
+            int n = this->number*2+2;
+            int *a = new int[n];
+            queue.toArray(a,n);
+            for (int i=0; i+1<n; i+=2) {
+                if (a[i]==0 && a[i+1]==-1) break;
+                a[i] *= a[i+1];
+                --a[i+1];
+            }
+            Polynomial result(a, n-2);
+            return result;
         }
 };
 #endif

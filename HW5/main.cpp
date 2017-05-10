@@ -27,15 +27,17 @@ int main(){
 	cout << "Input: ";
 	cin >> P1;
 	cout << "P1 is: " << P1 << endl << endl;
+
 	cout << "* Assign values for polynomial P2 *" << endl;
 	cout << "Input: ";
 	cin >> P2;
 	cout << "P2 is: " << P2 << endl << endl;
-#if 0
+
 	cout << "P3 = P1 - P2" <<endl;
 	P3 = P1 - P2;
 	cout << "Now P3 is: " << P3 << endl << endl;
 
+#if 0
 	cout << "P3 += 11" << endl;
 	P3 += 11;
 	cout << "Now P3 is: " << P3 << endl << endl;
@@ -82,8 +84,8 @@ int main(){
 	cout << "P4 is: " << P4 << endl;
 	cout << "P4 (-6) equals to: " << P4(-6) << endl << endl;
 
+#endif
 	cout << "---------- END PROGRAM ----------" << endl << endl;
 
-#endif
     return 0;
 }

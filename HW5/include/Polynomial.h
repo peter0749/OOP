@@ -1,5 +1,6 @@
 #ifndef _INCLUDE_POLY
 #define _INCLUDE_POLY
+#include <iostream>
 
 class Node {
     private:
@@ -43,13 +44,6 @@ class CircularList {
             data->setNext(data); // loop back
             read_ptr = data->getNext();
         }
-        void attach(CircularList &list) const {
-            Node *temp=data->getNext();
-            while(!( temp->getCoef()==0 && temp->getPower()==-1 )) {
-                list.insert( temp->getCoef(), temp->getPower() );
-                temp = temp->getNext();
-            }
-        }
         void insert(int coef, int power) {
             Node *searchPtr=data->getNext();
             Node *lastPtr  =data;
@@ -74,15 +68,15 @@ class CircularList {
             return result;
         }
         void nextReadPtr(void) {
-            read_ptr = read_ptr->getNext();
+            read_ptr =  read_ptr->getNext();
         }
         void resetReadPtr(void) {
             read_ptr = data->getNext();
         }
-        bool isEmpty(void) const {
+        const bool isEmpty(void) const {
             return data->getNext()==data;
         }
-        bool readEnd(void) const {
+        const bool readEnd(void) const {
             return read_ptr->getCoef()==0 && read_ptr->getPower()==-1;
         }
         void toArray(int *a, int n) const {
@@ -96,15 +90,22 @@ class CircularList {
             a[top++] = 0;
             a[top++] = -1;
         }
-        ~CircularList() {
+        void clear() {
             Node *ptr = data->getNext();
             Node *last= data;
             Node *end = data;
             while(ptr!=end) {
-                delete last;
+                if (last!=end)
+                    delete last;
                 last = ptr;
                 ptr = ptr->getNext();
             }
+            data->setNext(data);
+            this->resetReadPtr();
+        }
+        ~CircularList() {
+            clear();
+            delete data;
         }
 };
 
@@ -112,20 +113,28 @@ class Polynomial {
     private:
         CircularList queue;
         int number;
-    public:
-        Polynomial() :number(0) {}
-        Polynomial(Polynomial &cpy) :number(cpy.getSize()) {
-            int n=number*2+2;
+        void _copy(const Polynomial &cpy) {
+            int n=cpy.getSize()*2+2;
             int *a = new int[n];
+            queue.clear();
             cpy.get(a, n);
             set(a, n);
             delete[] a;
+        }
+    public:
+        Polynomial() :number(0) {}
+        Polynomial(const Polynomial &cpy) :number(cpy.getSize()) {
+            _copy(cpy);
         }
         Polynomial(int *arr, const int n) : number(0) {
             set(arr, n);
         }
         void insert(int coef, int power) {
             queue.insert(coef, power);
+            ++number;
+        }
+        void insert(const Node &ref) {
+            queue.insert(ref.getCoef(), ref.getPower());
             ++number;
         }
         int getSize(void) const {
@@ -137,7 +146,7 @@ class Polynomial {
         void set(int *a, int n) {
             if (n<4) return;
             number = 0;
-            queue.erase_all();
+            queue.clear();
             for (int i=0; i+1<n; i+=2) {
                 if (a[i]==0 && a[i+1]==-1) break;
                 queue.insert(a[i], a[i+1]);
@@ -156,17 +165,78 @@ class Polynomial {
             Polynomial result(a, n-2);
             return result;
         }
+        const Node read(void) const {
+            return queue.read();
+        }
+        void readNext(void) {
+            queue.nextReadPtr();
+        }
+        void resetRead(void) {
+            queue.resetReadPtr();
+        }
+        const bool readEnd(void) const {
+            return queue.readEnd();
+        }
+        const Polynomial& operator=(const Polynomial &second) {
+            if (this != &second) {
+                _copy(second);
+            }
+            return *this;
+        }
 };
+
+const Polynomial operator+(Polynomial &first, Polynomial &second) {
+    Polynomial result;
+    first.resetRead() , second.resetRead();
+    while(!first.readEnd() && !second.readEnd()) {
+        Node node1 = first.read();
+        Node node2 = second.read();
+        if (node1.getPower()>node2.getPower()) {
+            result.insert(node1);
+            first.readNext();
+        } else if (node1.getPower()<node2.getPower()) {
+            result.insert(node2);
+            second.readNext();
+        } else {
+            result.insert(node1.getCoef()+node2.getCoef(), node1.getPower());
+            first.readNext(); second.readNext();
+        }
+    }
+    first.resetRead() , second.resetRead();
+    return result;
+}
+
+const Polynomial operator-(Polynomial &first, Polynomial &second) {
+    Polynomial result;
+    first.resetRead() , second.resetRead();
+    while(!first.readEnd() && !second.readEnd()) {
+        Node node1 = first.read();
+        Node node2 = second.read();
+        node2.setCoef(-node2.getCoef()); // negation
+        if (node1.getPower()>node2.getPower()) {
+            result.insert(node1);
+            first.readNext();
+        } else if (node1.getPower()<node2.getPower()) {
+            result.insert(node2);
+            second.readNext();
+        } else {
+            result.insert(node1.getCoef()+node2.getCoef(), node1.getPower());
+            first.readNext(); second.readNext();
+        }
+    }
+    first.resetRead() , second.resetRead();
+    return result;
+}
 
 std::ostream &operator << (std::ostream &os, const Polynomial &P) {
     int n = P.getSize()*2+2;
     int *arr = new int[n];
     P.get(arr, n);
-    if (P.getSize()>0) os << arr[0] << "^" << arr[1];
+    if (P.getSize()>0) os << arr[0] << "x^" << arr[1];
     for (int i=2; i+1<P.getSize()*2; i+=2) {
         os << (arr[i]>0?" +":" ") << arr[i];
         if (arr[i+1]!=0) {
-            os << "^" << arr[i+1];
+            os << "x^" << arr[i+1];
         }
     }
     return os;

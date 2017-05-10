@@ -19,7 +19,7 @@ class Polynomial {
         int getSize(void) const;
         void get(int *a, int n) const;
         void set(int *a, int n);
-        const Polynomial derivative(void);
+        Polynomial derivative(void);
         const Node read(void) const;
         void readNext(void);
         void resetRead(void);
@@ -30,21 +30,23 @@ class Polynomial {
         friend std::istream &operator >> (std::istream &is, Polynomial &P);
 };
 
-const Polynomial operator+(Polynomial &first, Polynomial &second);
-const Polynomial operator+(Polynomial &first, int coef);
-const Polynomial operator+(int coef, Polynomial &second);
+const Polynomial operator+(const Polynomial &first, const Polynomial &second);
+const Polynomial operator+(const Polynomial &first, const int coef);
+const Polynomial operator+(const int coef, const Polynomial &second);
 const Polynomial operator-(const Polynomial&);
-const Polynomial operator-(Polynomial &first, Polynomial &second);
-const Polynomial operator-(Polynomial &first, int coef);
-const Polynomial operator-(int coef, Polynomial &second);
-const Polynomial operator*(Polynomial &first, Polynomial &second);
+const Polynomial operator-(const Polynomial &first, const Polynomial &second);
+const Polynomial operator-(const Polynomial &first, const int coef);
+const Polynomial operator-(const int coef, const Polynomial &second);
+const Polynomial operator*(const Polynomial &first, const Polynomial &second);
 const Polynomial operator*(const Polynomial &first, const int coef);
 const Polynomial operator*(const int coef, const Polynomial &second);
-const Polynomial& operator+=(Polynomial &first, Polynomial &second);
-const Polynomial& operator-=(Polynomial &first, Polynomial &second);
-const Polynomial& operator*=(Polynomial &first, Polynomial &second);
+const Polynomial& operator+=(Polynomial &first, const Polynomial &second);
+const Polynomial& operator-=(Polynomial &first, const Polynomial &second);
+const Polynomial& operator*=(Polynomial &first, const Polynomial &second);
 const Polynomial& operator+=(Polynomial &first, const int coef);
 const Polynomial& operator-=(Polynomial &first, const int coef);
 const Polynomial& operator*=(Polynomial &first, const int coef);
+const bool operator==(const Polynomial &first, const Polynomial &second);
+const bool operator!=(const Polynomial &first, const Polynomial &second);
 
 #endif

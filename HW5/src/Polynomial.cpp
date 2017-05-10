@@ -39,11 +39,12 @@ void Polynomial::set(int *a, int n) {
     queue.clear();
     for (int i=0; i+1<n; i+=2) {
         if (a[i]==0 && a[i+1]==-1) break;
+        if (a[i]==0) continue;
         queue.insert(a[i], a[i+1]);
         ++number;
     }
 }
-const Polynomial Polynomial::derivative(void) {
+Polynomial Polynomial::derivative(void) {
     int n = this->number*2+2;
     int *a = new int[n];
     queue.toArray(a,n);
@@ -75,36 +76,48 @@ const Polynomial& Polynomial::operator=(const Polynomial &second) {
     return *this;
 }
 
-const Polynomial operator+(Polynomial &first, int coef) {
+const Polynomial operator+(const Polynomial &first, const int coef) {
     Polynomial result(first);
     result.insert(coef, 0);
     return result;
 }
-const Polynomial operator+(int coef, Polynomial &second) {
+const Polynomial operator+(const int coef, const Polynomial &second) {
     return (second + coef);
 }
-const Polynomial operator+(Polynomial &first, Polynomial &second) {
+const Polynomial operator+(const Polynomial &first, const Polynomial &second) {
     Polynomial result;
-    first.resetRead() , second.resetRead();
-    while(!first.readEnd() && !second.readEnd()) {
-        Node node1 = first.read();
-        Node node2 = second.read();
-        if (node1.getPower()>node2.getPower()) {
-            result.insert(node1);
-            first.readNext();
-        } else if (node1.getPower()<node2.getPower()) {
-            result.insert(node2);
-            second.readNext();
+    int *a = new int[first.getSize()*2+2];
+    int *b = new int[second.getSize()*2+2];
+    first.get(a,first.getSize()*2+2);
+    second.get(b,second.getSize()*2+2);
+    int i=0, j=0;
+    while (!(a[i*2]==0&&a[i*2+1]==-1) && !(b[j*2]==0&&b[j*2+1]==-1)) {
+        if (a[i*2+1]>b[j*2+1]) {
+            result.insert(a[i*2], a[i*2+1]);
+            ++i;
+        } else if (a[i*2+1]<b[j*2+1]) {
+            result.insert(b[j*2], b[j*2+1]);
+            ++j;
         } else {
-            result.insert(node1.getCoef()+node2.getCoef(), node1.getPower());
-            first.readNext(); second.readNext();
+            if (a[i*2]+b[j*2]!=0)
+                result.insert(a[i*2]+b[j*2], a[i*2+1]);
+            ++j; ++i;
         }
     }
-    first.resetRead() , second.resetRead();
+    while (!(a[i*2]==0&&a[i*2+1]==-1)) {
+        result.insert(a[i*2], a[i*2+1]);
+        ++i;
+    }
+    while (!(b[j*2]==0&&b[j*2+1]==-1)) {
+        result.insert(b[j*2], b[j*2+1]);
+        ++j;
+    }
+    delete[] a;
+    delete[] b;
     return result;
 }
 
-const Polynomial operator-(Polynomial &first, int coef) {
+const Polynomial operator-(const Polynomial &first, const int coef) {
     return (first + (-coef));
 }
 
@@ -126,49 +139,58 @@ const Polynomial operator-(int coef, const Polynomial &second) {
     return (result + coef);
 }
 
-const Polynomial operator-(Polynomial &first, Polynomial &second) {
+const Polynomial operator-(const Polynomial &first, const Polynomial &second) {
     Polynomial result;
-    first.resetRead() , second.resetRead();
-    while(!first.readEnd() && !second.readEnd()) {
-        Node node1 = first.read();
-        Node node2 = second.read();
-        node2.setCoef(-node2.getCoef()); // negation
-        if (node1.getPower()>node2.getPower()) {
-            result.insert(node1);
-            first.readNext();
-        } else if (node1.getPower()<node2.getPower()) {
-            result.insert(node2);
-            second.readNext();
+    int *a = new int[first.getSize()*2+2];
+    int *b = new int[second.getSize()*2+2];
+    int i=0, j=0;
+    first.get(a,first.getSize()*2+2);
+    second.get(b,second.getSize()*2+2);
+    while (!(a[i*2]==0&&a[i*2+1]==-1) && !(b[j*2]==0&&b[j*2+1]==-1)) {
+        if (a[i*2+1]>b[j*2+1]) {
+            result.insert(a[i*2], a[i*2+1]);
+            ++i;
+        } else if (a[i*2+1]<b[j*2+1]) {
+            result.insert(-b[j*2], b[j*2+1]);
+            ++j;
         } else {
-            int temp = node1.getCoef()+node2.getCoef();
-            if (temp)
-                result.insert(temp, node1.getPower());
-            first.readNext(); second.readNext();
+            if(a[i*2]-b[j*2]!=0)
+                result.insert(a[i*2]-b[j*2], a[i*2+1]);
+            ++j; ++i;
         }
     }
-    first.resetRead() , second.resetRead();
+    while (!(a[i*2]==0&&a[i*2+1]==-1)) {
+        result.insert(a[i*2], a[i*2+1]);
+        ++i;
+    }
+    while (!(b[j*2]==0&&b[j*2+1]==-1)) {
+        result.insert(-b[j*2], b[j*2+1]);
+        ++j;
+    }
+    delete[] a;
+    delete[] b;
     return result;
 }
 
-const Polynomial operator*(Polynomial &first, Polynomial &second) {
+const Polynomial operator*(const Polynomial &first, const Polynomial &second) {
     Polynomial result;
-    first.resetRead();
-    while(!first.readEnd()) {
-        Node node1=first.read();
-        second.resetRead();
-        while(!second.readEnd()) {
-            Node node2=second.read();
-            result.insert(node1.getCoef()*node2.getCoef(), node1.getPower()+node2.getPower());
-            second.readNext();
+    int *a = new int[first.getSize()*2+2];
+    int *b = new int[second.getSize()*2+2];
+    first.get(a,first.getSize()*2+2);
+    second.get(b,second.getSize()*2+2);
+    for (int i=0; i<first.getSize(); ++i) {
+        for (int j=0; j<second.getSize(); ++j) {
+            result.insert(a[i*2]*b[j*2], a[i*2+1]+b[j*2+1]);
         }
-        first.readNext();
     }
-    first.resetRead(); second.resetRead();
+    delete[] a;
+    delete[] b;
     return result;
 }
 
 const Polynomial operator*(const Polynomial &ref, const int coef) {
     Polynomial result;
+    if (coef==0) return result;
     int n = ref.getSize()*2+2;
     int *a = new int[n];
     ref.get(a,n);
@@ -184,7 +206,7 @@ const Polynomial operator*(const int coef, const Polynomial &ref) {
     return ref * coef;
 }
 
-int Polynomial::_fast_pow(int x, int n) const {
+int Polynomial::_fast_pow(const int x, int n) const {
     int ans=1, temp=x;
     while(n) {
         if (n&1) {
@@ -208,7 +230,7 @@ const int Polynomial::operator()(const int x) const {
     return ans;
 }
 
-const Polynomial& operator+=(Polynomial &first, Polynomial &second) {
+const Polynomial& operator+=(Polynomial &first, const Polynomial &second) {
     if (&first==&second) {
         first = first*2;
         return first;
@@ -217,13 +239,52 @@ const Polynomial& operator+=(Polynomial &first, Polynomial &second) {
     return first;
 }
 
-const Polynomial& operator-=(Polynomial &first, Polynomial &second) {
+const Polynomial& operator-=(Polynomial &first, const Polynomial &second) {
     if (&first==&second) {
         first.clear();
         return first;
     }
     first = first - second;
     return first;
+}
+
+const Polynomial& operator*=(Polynomial &first, const Polynomial &second) {
+    first = first * second;
+    return first;
+}
+
+const Polynomial& operator+=(Polynomial &first, const int coef) {
+    first = first + coef;
+    return first;
+}
+
+const Polynomial& operator-=(Polynomial &first, const int coef) {
+    first = first - coef;
+    return first;
+}
+
+const Polynomial& operator*=(Polynomial &first, const int coef) {
+    first = first * coef;
+    return first;
+}
+
+const bool operator==(const Polynomial &first, const Polynomial &second) {
+    if (first.getSize()!=second.getSize()) return false;
+    int n  = first.getSize();
+    int *a = new int[n*2+2];
+    int *b = new int[n*2+2];
+    first.get(a,n*2+2);
+    second.get(b,n*2+2);
+    for (int i=0; i<n; ++i) {
+        if (a[i*2]!=b[i*2] || a[i*2+1]!=b[i*2+1]) return false;
+    }
+    delete[] a;
+    delete[] b;
+    return true;
+}
+
+const bool operator!=(const Polynomial &first, const Polynomial &second) {
+    return !(first==second);
 }
 
 std::ostream &operator << (std::ostream &os, const Polynomial &P) {

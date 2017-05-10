@@ -6,8 +6,6 @@
 
 
 #include "include/global.h"
-#include "include/Node.h"
-#include "include/CircularList.h"
 #include "include/Polynomial.h"
 // ****If you need to include more header files, add it here****
 
@@ -38,19 +36,7 @@ int main(){
 	cout << "P3 = P1 - P2" <<endl;
 	P3 = P1 - P2;
 	cout << "Now P3 is: " << P3 << endl << endl;
-    P3 = P1 * P2;
-	cout << "Now P3 is: " << P3 << endl << endl;
-    P3 = -P3;
-	cout << "Now P3 is: " << P3 << endl << endl;
-    P3 = P3 - 3;
-	cout << "Now P3 is: " << P3 << endl << endl;
-    cout << P3(3) << endl;
-    P3 += P3;
-	cout << "Now P3 is: " << P3 << endl << endl;
-    P3 -= P3;
-	cout << "Now P3 is: " << P3 << endl << endl;
 
-#if 0
 	cout << "P3 += 11" << endl;
 	P3 += 11;
 	cout << "Now P3 is: " << P3 << endl << endl;
@@ -97,7 +83,6 @@ int main(){
 	cout << "P4 is: " << P4 << endl;
 	cout << "P4 (-6) equals to: " << P4(-6) << endl << endl;
 
-#endif
 	cout << "---------- END PROGRAM ----------" << endl << endl;
 
     return 0;

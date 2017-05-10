@@ -1,5 +1,12 @@
-#ifndef _INCLUDE_POLY
-#define _INCLUDE_POLY
+// Main Program Example for HW5
+
+// You can use this file as your main program, or add more functions if you want.
+// Please ***MAKE SURE*** that your class works fine in this main program.
+// TA will test your class by this program with additional test data.
+
+
+#include <iostream>
+// ****If you need to include more header files, add it here****
 
 class Node {
     private:
@@ -32,15 +39,18 @@ class Node {
 class CircularList {
     private:
         Node *data;
+        Node *data_ptr;
         Node *read_ptr;
     public:
         CircularList() {
             data = new Node();
+            data_ptr = data;
             read_ptr = data->getNext();
         }
         CircularList(const Node &nod) {
             data = new Node(nod);
             data->setNext(data); // loop back
+            data_ptr = data;
             read_ptr = data->getNext();
         }
         void attach(CircularList &list) const {
@@ -51,21 +61,18 @@ class CircularList {
             }
         }
         void insert(int coef, int power) {
-            Node *searchPtr=data->getNext();
-            Node *lastPtr  =data;
-            while (!( searchPtr->getCoef()==0 && searchPtr->getPower()==-1) &&\
-                    searchPtr->getPower()>power) {
-                lastPtr = searchPtr;
-                searchPtr = searchPtr->getNext();
-            }
-            if (searchPtr->getPower()==power) {
-                searchPtr->setCoef( searchPtr->getCoef()+coef );
-            } else {
-                Node *temp = new Node;
-                temp->setCoef(coef);
-                temp->setPower(power);
-                temp->setNext(searchPtr);
-                lastPtr->setNext(temp);
+            Node *temp = new Node;
+            temp->setCoef(coef);
+            temp->setPower(power);
+            temp->setNext(data);
+            data_ptr->setNext(temp);
+            data_ptr = temp;
+        }
+        void erase_last(void) {
+            if(data_ptr!=data) {
+                Node *temp = data_ptr;
+                data_ptr = data_ptr->getNext();
+                delete temp;
             }
         }
         const Node read(void) const {
@@ -80,7 +87,7 @@ class CircularList {
             read_ptr = data->getNext();
         }
         bool isEmpty(void) const {
-            return data->getNext()==data;
+            return data==data_ptr;
         }
         bool readEnd(void) const {
             return read_ptr->getCoef()==0 && read_ptr->getPower()==-1;
@@ -96,15 +103,17 @@ class CircularList {
             a[top++] = 0;
             a[top++] = -1;
         }
-        ~CircularList() {
-            Node *ptr = data->getNext();
-            Node *last= data;
-            Node *end = data;
-            while(ptr!=end) {
-                delete last;
-                last = ptr;
-                ptr = ptr->getNext();
+        void erase_all(void) {
+            while(!isEmpty()) {
+                erase_last();
             }
+            data_ptr = data;
+            read_ptr = data->getNext();
+        }
+
+        ~CircularList() {
+            erase_all();
+            delete data;
         }
 };
 
@@ -180,4 +189,23 @@ std::istream &operator >> (std::istream &is, Polynomial &P) {
     return is;
 }
 
-#endif
+using std::cout;
+using std::cin;
+using std::endl;
+
+int main(){
+	// Help section
+	cout << "-------------------------------------------------------------" << endl;
+	cout << "Please Type in coefficients and exponents, seperated by SPACE" << endl;
+	cout << ", and add 0 -1 in the end" << endl;
+	cout << "For example, if you wish to assign P1 as 5x^3 -4x^2 + x -9" << endl;
+	cout << "Type: 5 3 -4 2 1 1 -9 0 0 -1"<<endl;
+	cout << "-------------------------------------------------------------" << endl << endl;
+
+	Polynomial P1, P2, P3, P4;
+	cout << "* Assign values for polynomial P1 *" << endl;
+	cout << "Input: ";
+	cin >> P1;
+	cout << "P1 is: " << P1 << endl << endl;
+    return 0;
+}

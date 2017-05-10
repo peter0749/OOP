@@ -23,17 +23,15 @@ int main(){
 	cout << "-------------------------------------------------------------" << endl << endl;
 
 	Polynomial P1, P2, P3, P4;
-#if 0
 	cout << "* Assign values for polynomial P1 *" << endl;
 	cout << "Input: ";
 	cin >> P1;
 	cout << "P1 is: " << P1 << endl << endl;
-
 	cout << "* Assign values for polynomial P2 *" << endl;
 	cout << "Input: ";
 	cin >> P2;
 	cout << "P2 is: " << P2 << endl << endl;
-
+#if 0
 	cout << "P3 = P1 - P2" <<endl;
 	P3 = P1 - P2;
 	cout << "Now P3 is: " << P3 << endl << endl;

@@ -38,6 +38,17 @@ int main(){
 	cout << "P3 = P1 - P2" <<endl;
 	P3 = P1 - P2;
 	cout << "Now P3 is: " << P3 << endl << endl;
+    P3 = P1 * P2;
+	cout << "Now P3 is: " << P3 << endl << endl;
+    P3 = -P3;
+	cout << "Now P3 is: " << P3 << endl << endl;
+    P3 = P3 - 3;
+	cout << "Now P3 is: " << P3 << endl << endl;
+    cout << P3(3) << endl;
+    P3 += P3;
+	cout << "Now P3 is: " << P3 << endl << endl;
+    P3 -= P3;
+	cout << "Now P3 is: " << P3 << endl << endl;
 
 #if 0
 	cout << "P3 += 11" << endl;

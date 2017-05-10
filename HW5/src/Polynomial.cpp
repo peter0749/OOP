@@ -1,5 +1,9 @@
 #include <iostream>
 #include "../include/Polynomial.h"
+void Polynomial::clear(void) {
+    queue.clear();
+    number=0;
+}
 void Polynomial::_copy(const Polynomial &cpy) {
     int n=cpy.getSize()*2+2;
     int *a = new int[n];
@@ -49,6 +53,7 @@ const Polynomial Polynomial::derivative(void) {
         --a[i+1];
     }
     Polynomial result(a, n-2);
+    delete[] a;
     return result;
 }
 const Node Polynomial::read(void) const {
@@ -70,6 +75,14 @@ const Polynomial& Polynomial::operator=(const Polynomial &second) {
     return *this;
 }
 
+const Polynomial operator+(Polynomial &first, int coef) {
+    Polynomial result(first);
+    result.insert(coef, 0);
+    return result;
+}
+const Polynomial operator+(int coef, Polynomial &second) {
+    return (second + coef);
+}
 const Polynomial operator+(Polynomial &first, Polynomial &second) {
     Polynomial result;
     first.resetRead() , second.resetRead();
@@ -91,6 +104,28 @@ const Polynomial operator+(Polynomial &first, Polynomial &second) {
     return result;
 }
 
+const Polynomial operator-(Polynomial &first, int coef) {
+    return (first + (-coef));
+}
+
+const Polynomial operator-(const Polynomial &ref) {
+    Polynomial result;
+    int n = ref.getSize()*2+2;
+    int *a = new int[n];
+    ref.get(a,n);
+    for (int i=0; i<ref.getSize(); ++i) {
+        a[i*2] = -a[i*2];
+    }
+    result.set(a,n);
+    delete[] a;
+    return result;
+}
+
+const Polynomial operator-(int coef, const Polynomial &second) {
+    Polynomial result(-second);
+    return (result + coef);
+}
+
 const Polynomial operator-(Polynomial &first, Polynomial &second) {
     Polynomial result;
     first.resetRead() , second.resetRead();
@@ -105,14 +140,97 @@ const Polynomial operator-(Polynomial &first, Polynomial &second) {
             result.insert(node2);
             second.readNext();
         } else {
-            result.insert(node1.getCoef()+node2.getCoef(), node1.getPower());
+            int temp = node1.getCoef()+node2.getCoef();
+            if (temp)
+                result.insert(temp, node1.getPower());
             first.readNext(); second.readNext();
         }
     }
     first.resetRead() , second.resetRead();
     return result;
 }
+
+const Polynomial operator*(Polynomial &first, Polynomial &second) {
+    Polynomial result;
+    first.resetRead();
+    while(!first.readEnd()) {
+        Node node1=first.read();
+        second.resetRead();
+        while(!second.readEnd()) {
+            Node node2=second.read();
+            result.insert(node1.getCoef()*node2.getCoef(), node1.getPower()+node2.getPower());
+            second.readNext();
+        }
+        first.readNext();
+    }
+    first.resetRead(); second.resetRead();
+    return result;
+}
+
+const Polynomial operator*(const Polynomial &ref, const int coef) {
+    Polynomial result;
+    int n = ref.getSize()*2+2;
+    int *a = new int[n];
+    ref.get(a,n);
+    for (int i=0; i<ref.getSize(); ++i) {
+        a[i*2] = a[i*2]*coef;
+    }
+    result.set(a,n);
+    delete[] a;
+    return result;
+}
+
+const Polynomial operator*(const int coef, const Polynomial &ref) {
+    return ref * coef;
+}
+
+int Polynomial::_fast_pow(int x, int n) const {
+    int ans=1, temp=x;
+    while(n) {
+        if (n&1) {
+            ans*=temp;
+        }
+        temp*=temp;
+        n>>=1;
+    }
+    return ans;
+}
+
+const int Polynomial::operator()(const int x) const {
+    int n = this->getSize()*2 + 2;
+    int *a = new int[n];
+    int ans=0;
+    this->get(a, n);
+    for (int i=0; i<this->getSize(); ++i) {
+        ans += a[i*2]*_fast_pow(x, a[i*2+1]);
+    }
+    delete[] a;
+    return ans;
+}
+
+const Polynomial& operator+=(Polynomial &first, Polynomial &second) {
+    if (&first==&second) {
+        first = first*2;
+        return first;
+    }
+    first = first + second;
+    return first;
+}
+
+const Polynomial& operator-=(Polynomial &first, Polynomial &second) {
+    if (&first==&second) {
+        first.clear();
+        return first;
+    }
+    first = first - second;
+    return first;
+}
+
 std::ostream &operator << (std::ostream &os, const Polynomial &P) {
+    if (P.getSize()==0) {
+        os << "0";
+        return os;
+    }
     int n = P.getSize()*2+2;
     int *arr = new int[n];
     P.get(arr, n);
@@ -123,6 +241,7 @@ std::ostream &operator << (std::ostream &os, const Polynomial &P) {
             os << "x^" << arr[i+1];
         }
     }
+    delete[] arr;
     return os;
 }
 

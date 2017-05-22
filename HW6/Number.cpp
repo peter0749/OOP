@@ -2,7 +2,7 @@
 
 Number::Number () { this->n =0; }
 Number::Number (int n) : n(n) {
-    if(n<0||n>9) exit(1);
+    if(n<0||n>9) std::exit(1);
 }
 // Check that n is a 1-digit number,
 // if not, terminate using exit ()
@@ -41,7 +41,7 @@ int TwoDigitNumber::getN2(void) const {
 }
 TwoDigitNumber::TwoDigitNumber () : n1(0), n2(0) {/*empty*/} // Initialize all digits to 0
 TwoDigitNumber::TwoDigitNumber (const Number &n1, const Number &n2) :n1(n1.getNumber()), n2(n2.getNumber()) {
-    if (!(_check_valid(this->n1)&&_check_valid(this->n2))) exit(2);
+    if (!(_check_valid(this->n1)&&_check_valid(this->n2))) std::exit(2);
 }
 void TwoDigitNumber::guessWho() {
     std::cout<<"I'm TwoDigitNumber!"<<std::endl;

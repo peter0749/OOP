@@ -1,6 +1,13 @@
+#include <iostream>
+#include <typeinfo>
 #include <string>
+#include <cstdlib>
 // Class representing 1-digit natural numbers (from 0 to 9)
-class Number {
+class BaseNumber {
+    public:
+        virtual void guessWho() = 0;
+};
+class Number : public BaseNumber {
     // Declare a protectedinstance variable:
     // n, 1-digit integer initialized to 0
     private:
@@ -15,6 +22,9 @@ class Number {
         // initialize instance variable to n
 
         Number (const Number& n) : n(n.getNumber()) {/*empty*/} // Initialize instance variable
+        virtual void guessWho(void) {
+            std::cerr << "I'm Number!" <<std::endl;
+        }
         int getNumber (void) const { 
             return this->n;
         } // Return the 1-digit number
@@ -54,6 +64,9 @@ class TwoDigitNumber: public Number{
         TwoDigitNumber () : n1(0), n2(0) {/*empty*/} // Initialize all digits to 0
         TwoDigitNumber (const Number &n1, const Number &n2) :n1(n1.getNumber()), n2(n2.getNumber()) {
             if (!(_check_valid(this->n1)&&_check_valid(this->n2))) exit(2);
+        }
+        virtual void guessWho() {
+            std::cout<<"I'm TwoDigitNumber!"<<std::endl;
         }
         // Initialize all digits to n1 and n2
         bool equals (TwoDigitNumber n) {
@@ -98,6 +111,9 @@ class ThreeDigitNumber: public TwoDigitNumber {
         TwoDigitNumber getN2(void) const {
             return this->n2;
         }
+        virtual void guessWho() {
+            std::cerr<<"I'm ThreeDigitNumber!"<<std::endl;
+        }
         bool equals (const ThreeDigitNumber &n) const {
             return getN1().equals(n.getN1()) && getN2().equals(n.getN2());
         }
@@ -120,3 +136,70 @@ class ThreeDigitNumber: public TwoDigitNumber {
         // ThreeDigitNumber, for example 111 or 003.
 };
 
+class TestNumbers {
+    private:
+        inline static bool isNumber(BaseNumber *base) {
+            Number* inst = dynamic_cast<Number*>(base);
+            return inst!=NULL;
+        }
+        inline static bool isTwoDigitNumber(BaseNumber *base) {
+            TwoDigitNumber* inst = dynamic_cast<TwoDigitNumber*>(base);
+            return inst!=NULL;
+        }
+        inline static bool isThreeDigitNumber(BaseNumber *base) {
+            ThreeDigitNumber* inst = dynamic_cast<ThreeDigitNumber*>(base);
+            return inst!=NULL;
+        }
+    public:
+        Number getFirstDigit (int n) {
+            Number ret(n%10);
+            return ret;
+        }
+        Number getSecondDigit (int n) {
+            Number ret((n/10)%10);
+            return ret;
+        }
+        static Number** genNums (const int num=100, const int lim=1000) {
+            Number **ptr = new Number*[num];
+            for (int i=0; i<num; ++i) {
+                int temp = rand()%lim;
+                if (temp<10) {
+                    ptr[i] = new Number(temp);
+                } else if (temp<100) {
+                    ptr[i] = new TwoDigitNumber(Number(temp/10), Number(temp%10));
+                } else {
+                    ptr[i] = new ThreeDigitNumber(Number(temp/100),\
+                            TwoDigitNumber(Number((temp/10)%10), Number(temp%10)));
+                }
+            }
+            return ptr;
+        }
+        static std::string printAvg (Number** nums, const size_t num=100) {
+            BaseNumber **ptr = (BaseNumber**)nums; //Downcasting. It's okay.
+            std::string ret("");
+            int counter=0, sum=0;
+            for (int i=0; i<num; ++i) {
+                if (isThreeDigitNumber(ptr[i])) {
+                    ThreeDigitNumber *tptr = (ThreeDigitNumber*)ptr[i];
+                    Number n1 = tptr->getN1();
+                    TwoDigitNumber n2 = tptr->getN2();
+                    int number = n1.getNumber()*100 + n2.getN1()*10 + n2.getN2();
+                    sum+=number;
+                    ++counter;
+                }
+            }
+            sum/=counter;
+            ret += (char)( (sum/100)%10 + '0' );
+            ret += (char)( (sum/10)%10 + '0' );
+            ret += (char)( sum%10 + '0' );
+            return ret;
+        }
+};
+
+using namespace std;
+
+int main(void) {
+    srand(time(NULL));
+    Number **arr = TestNumbers::genNums();
+    cout << TestNumbers::printAvg(arr) << endl;
+}

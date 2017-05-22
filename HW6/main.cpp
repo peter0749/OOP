@@ -8,7 +8,7 @@ int main(void) {
     srand(3);
     Number **arr = TestNumbers::genNums();
     cout << "Average of 100 random Numbers in [0-999] (only compute ThreeDigitNumber):\n" << TestNumbers::printAvg(arr) << endl;
-    delete[] arr;
+    delete[] arr; arr=NULL;
     Number n1(3), n2(6);
     TwoDigitNumber n3(n1, n2);
     ThreeDigitNumber n4(n1, n3);

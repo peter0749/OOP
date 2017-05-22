@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <iostream>
 #include <string>
 #ifndef _INCLUDE_NUMBER_H

@@ -10,7 +10,7 @@ Number::Number (int n) : n(n) {
 
 Number::Number (const Number& n) : n(n.getNumber()) {/*empty*/} // Initialize instance variable
 void Number::guessWho(void) {
-    std::cerr << "I'm Number!" <<std::endl;
+    std::cout << "I'm Number!" <<std::endl;
 }
 int Number::getNumber (void) const {
     return this->n;
@@ -83,7 +83,7 @@ TwoDigitNumber ThreeDigitNumber::getN2(void) const {
     return this->n2;
 }
 void ThreeDigitNumber::guessWho() {
-    std::cerr<<"I'm ThreeDigitNumber!"<<std::endl;
+    std::cout<<"I'm ThreeDigitNumber!"<<std::endl;
 }
 bool ThreeDigitNumber::equals (const ThreeDigitNumber &n) const {
     return getN1().equals(n.getN1()) && getN2().equals(n.getN2());

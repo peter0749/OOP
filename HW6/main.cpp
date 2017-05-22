@@ -21,8 +21,18 @@ int Rabin_Karp (const string &s) {
 int main(void) {
     srand(Rabin_Karp("The quick brown fox jumps over the lazy dog."));
     Number n1(3), n2(6);
-    TwoDigitNumber n3(n1, n2);
-    ThreeDigitNumber n4(n1, n3);
+    TwoDigitNumber n3(n1, n2), n3p(n2, n1);
+    ThreeDigitNumber n4(n1, n3), n4p(n2, n3);
+    cout << n1.toString() << " > " << n2.toString() << " : " << n1.compare(n2) << endl;
+    cout << n2.toString() << " > " << n1.toString() << " : " << n2.compare(n1) << endl;
+    cout << n1.toString() << " == " << n2.toString() << " : " << n1.equals(n2) << endl;
+    cout << n3.toString() << " > " << n3p.toString() << " : " << n3.compare(n3p) << endl;
+    cout << n3p.toString() << " > " << n3.toString() << " : " << n3p.compare(n3) << endl;
+    cout << n3.toString() << " == " << n3p.toString() << " : " << n3.equals(n3p) << endl;
+    cout << n4.toString() << " > " << n4p.toString() << " : " << n4.compare(n4p) << endl;
+    cout << n4p.toString() << " > " << n4.toString() << " : " << n4p.compare(n4) << endl;
+    cout << n4.toString() << " == " << n4p.toString() << " : " << n4.equals(n4p) << endl;
+
     cout << "Number: " << n1.toString() << endl;
     cout << "Number: " << n2.toString() << endl;
     cout << "TwoDigitNumber: " << n3.toString() << endl;

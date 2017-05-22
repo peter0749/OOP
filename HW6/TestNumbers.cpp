@@ -14,11 +14,11 @@ inline bool TestNumbers::isThreeDigitNumber(BaseNumber *base) {
 }
 
 Number TestNumbers::getFirstDigit (int n) {
-    Number ret(n%10);
+    Number ret((n/10)%10);
     return ret;
 }
 Number TestNumbers::getSecondDigit (int n) {
-    Number ret((n/10)%10);
+    Number ret(n%10);
     return ret;
 }
 Number** TestNumbers::genNums (const int num, const int lim) {
